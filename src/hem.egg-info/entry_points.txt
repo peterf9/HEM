@@ -1,0 +1,2 @@
+[console_scripts]
+hem = hem.cli:app

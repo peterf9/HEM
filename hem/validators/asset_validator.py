@@ -1,6 +1,6 @@
 import yaml
 
-from hem.models.asset import Asset
+from hem.contracts.asset import Asset
 
 
 def validate_asset(path):

@@ -26,72 +26,31 @@ while remaining fully compatible with Home Assistant.
 
 ---
 
-## Architecture
-
-```
-Providers
-      │
-      ▼
-Registry
-      │
-      ▼
-Engines
-      │
-      ▼
-Core
-      │
-      ▼
-Dashboards
-      │
-      ▼
-Automations / AI
-```
-
----
-
 ## Project Structure
 
 ```
 HEM/
 │
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── docs/
-│
 ├── hem/
-│   ├── __init__.py
 │   ├── cli.py
-│   ├── config.py
-│   │
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── asset.py
-│   │   └── source.py
-│   │
+│   ├── loaders/
+│   ├── contracts/
 │   ├── validators/
-│   │   ├── __init__.py
-│   │   └── asset_validator.py
-│   │
 │   ├── generators/
-│   │   ├── __init__.py
-│   │   └── provider_generator.py
-│   │
+│   ├── runtime/
+│   ├── exceptions/
 │   ├── templates/
-│   │
 │   └── utils/
 │
 ├── src/
 │   ├── assets/
 │   ├── providers/
-│   ├── engines/
-│   └── dashboards/
+│   ├── dashboards/
+│   └── policies/
 │
 ├── output/
-│
 ├── tests/
-│
+├── docs/
 ├── pyproject.toml
 ├── README.md
 └── LICENSE
@@ -101,37 +60,9 @@ HEM/
 
 ## Current Status
 
-Current version:
-
-**Sprint 0 — Foundation**
+Current version: **Sprint 0 — Foundation**
 
 The project is under active development.
-
----
-
-## Goals
-
-- Enterprise monitoring for Home Assistant
-- Asset-driven architecture
-- Automatic YAML generation
-- Future HACS integration
-- Modular design
-- Open Source
-
----
-
-## Roadmap
-
-- [x] Architecture Definition
-- [x] Asset Model
-- [ ] CLI
-- [ ] Validator
-- [ ] YAML Generator
-- [ ] Registry Engine
-- [ ] Device Engine
-- [ ] Core Engine
-- [ ] Dashboard Generator
-- [ ] HACS Integration
 
 ---
 
