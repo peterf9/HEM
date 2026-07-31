@@ -9,5 +9,5 @@ def test_build_manager():
     assert report.provider_count > 0
     assert report.template_count > 0
     assert len(report.generated_files) > 0
-    assert report.generated_files[0].name == "provider.yaml"
+    assert report.generated_files[0].name == "templates.yaml"
     assert report.generated_files[0].exists()

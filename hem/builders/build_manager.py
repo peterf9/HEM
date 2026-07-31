@@ -31,7 +31,7 @@ class BuildManager:
             template_count=len(assets),
         )
 
-        provider_output = Paths.hem_package_output() / "templates" / "provider.yaml"
+        provider_output = Paths.hem_package_output() / "templates.yaml"
         provider_gen = ProviderGenerator(Paths.templates())
         provider_gen.generate(assets, provider_output)
 
