@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+from hem.capabilities.metadata import CapabilityMetadata
 from hem.contracts.asset import Asset
 from hem.runtime.build_context import BuildContext
 
@@ -8,13 +9,16 @@ class BaseCapability(ABC):
 
     @property
     @abstractmethod
-    def name(self) -> str:
+    def metadata(self) -> CapabilityMetadata:
         pass
 
     @property
-    @abstractmethod
+    def name(self) -> str:
+        return self.metadata.name
+
+    @property
     def platform(self) -> str:
-        pass
+        return self.metadata.platform
 
     @abstractmethod
     def render(self, context: BuildContext, asset: Asset) -> str:

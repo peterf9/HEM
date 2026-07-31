@@ -1,4 +1,5 @@
 from hem.capabilities.base import BaseCapability
+from hem.capabilities.metadata import CapabilityMetadata
 from hem.contracts.asset import Asset
 from hem.runtime.build_context import BuildContext
 
@@ -6,12 +7,16 @@ from hem.runtime.build_context import BuildContext
 class PacketLossCapability(BaseCapability):
 
     @property
-    def name(self) -> str:
-        return "packet_loss"
-
-    @property
-    def platform(self) -> str:
-        return "sensor"
+    def metadata(self) -> CapabilityMetadata:
+        return CapabilityMetadata(
+            name="packet_loss",
+            display_name="Packet Loss",
+            description="Monitors network packet loss percentage",
+            platform="sensor",
+            unit="%",
+            icon="mdi:package-variant-remove",
+            state_class="measurement",
+        )
 
     def render(self, context: BuildContext, asset: Asset) -> str:
         return f"""  - sensor:
