@@ -7,7 +7,7 @@ class ProviderGenerator(BaseGenerator):
 
     def generate(self, assets, output: Path):
 
-        template = self.env.get_template("provider.j2")
+        template = self.env.get_template("providers/provider.j2")
 
         rendered = template.render(
             assets=assets
