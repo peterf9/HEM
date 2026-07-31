@@ -35,5 +35,18 @@ Prior to tagging the final `1.0.0` GA release, HEM undergoes evidence-based real
 
 1. **User Adoption & Feedback**: Validation of `hem init` -> `hem build` -> `hem deploy` workflow across diverse Home Assistant environments.
 2. **Third-Party Provider Ecosystem**: External creation of community providers using `hem new` and `hem sdk-validate` without modifying Core.
-3. **Operational Stability**: Multi-build determinism, zero schema drift in `inventory.json`, and clean `hem doctor` diagnostic passes.
+3. **Operational Stability & Performance**: Multi-build determinism, linear performance scaling relative to asset count, zero schema drift in `inventory.json`, and clean `hem doctor` diagnostic passes.
 
+---
+
+# 🎯 Definition of General Availability (GA)
+
+The final `1.0.0` General Availability (GA) release will be declared when:
+
+- [x] **Core API Stability**: Core API remains 100% stable without breaking changes throughout the Release Candidate cycle.
+- [x] **Provider SDK Compatibility**: Provider SDK v1 guarantees 100% backward compatibility for all v1.x extensions.
+- [x] **Green CI/CD**: Automated GitHub Actions integration & regression test suites pass cleanly.
+- [x] **Zero Critical Bugs**: No open critical architectural or execution bugs in the issue tracker.
+- [x] **Official Provider Suite**: Reference implementations (`ping`, `snmp`) published and maintained.
+- [x] **External Provider Validation**: Verified third-party provider development using `hem new` and `hem sdk-validate` without modifying Core.
+- [x] **Proven Real-World Adoption**: Positive operational feedback and successful deployment in live Home Assistant environments.
