@@ -1,6 +1,12 @@
-import typer
+from pathlib import Path
 
-from rich import print
+import typer
+from rich.console import Console
+
+from hem.loaders.asset_loader import AssetLoader
+from hem.validators.asset_validator import AssetValidator
+
+console = Console()
 
 app = typer.Typer(
     help="HEM - HomeLab Enterprise Monitor"
@@ -9,28 +15,28 @@ app = typer.Typer(
 
 @app.command()
 def version():
-
-    print("[green]HEM[/green] 0.1.0")
+    console.print("[green]HEM[/green] 0.1.0")
 
 
 @app.command()
 def doctor():
-
-    print("[cyan]System OK[/cyan]")
+    console.print("[cyan]System OK[/cyan]")
 
 
 @app.command()
-def validate(path: str):
-    """Validate an asset YAML file."""
-    try:
-        from hem.validators.asset_validator import validate_asset
-        asset = validate_asset(path)
-        print(f"[green]✓ Asset '{asset.name}' ({asset.id}) is valid![/green]")
-    except Exception as e:
-        print(f"[red]✗ Validation failed:[/red] {e}")
-        raise typer.Exit(code=1)
+def validate():
+    loader = AssetLoader(Path("src/assets"))
+
+    assets = loader.load()
+
+    AssetValidator().validate(assets)
+
+    console.print()
+
+    console.print("[green]✓ Validation successful[/green]")
+
+    console.print(f"{len(assets)} assets loaded.")
 
 
 if __name__ == "__main__":
     app()
-

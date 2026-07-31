@@ -1,12 +1,17 @@
-import yaml
-
 from hem.contracts.asset import Asset
 
 
-def validate_asset(path):
+class AssetValidator:
 
-    with open(path) as f:
+    def validate(self, assets: list[Asset]) -> None:
 
-        data = yaml.safe_load(f)
+        ids = set()
 
-    return Asset.model_validate(data["asset"])
+        for asset in assets:
+
+            if asset.id in ids:
+                raise ValueError(
+                    f"Duplicate Asset ID: {asset.id}"
+                )
+
+            ids.add(asset.id)
