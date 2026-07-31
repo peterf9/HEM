@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from hem.generators.base import BaseGenerator
 from hem.runtime.build_context import BuildContext
@@ -13,7 +14,9 @@ class InventoryGenerator(BaseGenerator):
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
         inventory_data = {
-            "version": context.version,
+            "hem_version": context.version,
+            "inventory_version": 1,
+            "generated_at": datetime.now().isoformat(),
             "total_assets": len(context.inventory),
             "assets": [
                 {

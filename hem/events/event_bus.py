@@ -1,16 +1,19 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Type
+from hem.events.events import Event
+
 
 class EventBus:
 
     def __init__(self):
-        self._listeners: Dict[str, List[Callable]] = {}
+        self._listeners: Dict[Type[Event], List[Callable]] = {}
 
-    def subscribe(self, event_type: str, listener: Callable) -> None:
+    def subscribe(self, event_type: Type[Event], listener: Callable) -> None:
         if event_type not in self._listeners:
             self._listeners[event_type] = []
         self._listeners[event_type].append(listener)
 
-    def emit(self, event_type: str, data: any = None) -> None:
+    def emit(self, event: Event) -> None:
+        event_type = type(event)
         if event_type in self._listeners:
             for listener in self._listeners[event_type]:
-                listener(data)
+                listener(event)

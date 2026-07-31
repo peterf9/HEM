@@ -1,12 +1,12 @@
 from hem.builders.build_manager import BuildManager
 from hem.events.event_bus import EventBus
-from hem.generators.inventory import InventoryGenerator
+from hem.events.events import GeneratorFinishedEvent
 
 
 def test_inventory_generator_and_events():
     events_received = []
     bus = EventBus()
-    bus.subscribe("generator_finished", lambda gen: events_received.append(gen))
+    bus.subscribe(GeneratorFinishedEvent, lambda ev: events_received.append(ev.generator_name))
 
     manager = BuildManager(event_bus=bus)
     context = manager.build()

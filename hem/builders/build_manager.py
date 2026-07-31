@@ -2,6 +2,13 @@ import time
 from datetime import datetime
 
 from hem.events.event_bus import EventBus
+from hem.events.events import (
+    BuildStartedEvent,
+    AssetsLoadedEvent,
+    AssetsValidatedEvent,
+    GeneratorFinishedEvent,
+    BuildFinishedEvent,
+)
 from hem.generators.inventory import InventoryGenerator
 from hem.generators.manifest import ManifestGenerator
 from hem.generators.provider import ProviderGenerator
@@ -29,22 +36,22 @@ class BuildManager:
             started_at=started_at,
         )
 
-        self.event_bus.emit("build_started", context)
+        self.event_bus.emit(BuildStartedEvent(context=context))
 
         context.assets = AssetLoader(Paths.assets()).load()
         context.inventory = list(context.assets)
         context.statistics.assets_loaded = len(context.assets)
-        self.event_bus.emit("assets_loaded", context.assets)
+        self.event_bus.emit(AssetsLoadedEvent(assets=context.assets))
 
         AssetValidator().validate(context.assets)
         context.statistics.assets_validated = len(context.assets)
-        self.event_bus.emit("assets_validated", context.assets)
+        self.event_bus.emit(AssetsValidatedEvent(assets=context.assets))
 
         InventoryGenerator(Paths.templates()).generate(context)
-        self.event_bus.emit("generator_finished", "InventoryGenerator")
+        self.event_bus.emit(GeneratorFinishedEvent(generator_name="InventoryGenerator"))
 
         ProviderGenerator(Paths.templates()).generate(context)
-        self.event_bus.emit("generator_finished", "ProviderGenerator")
+        self.event_bus.emit(GeneratorFinishedEvent(generator_name="ProviderGenerator"))
 
         end_time = time.perf_counter()
         finished_at = datetime.now()
@@ -53,9 +60,9 @@ class BuildManager:
         context.statistics.build_time_ms = (end_time - start_time) * 1000
 
         ManifestGenerator(Paths.templates()).generate(context)
-        self.event_bus.emit("generator_finished", "ManifestGenerator")
+        self.event_bus.emit(GeneratorFinishedEvent(generator_name="ManifestGenerator"))
 
-        self.event_bus.emit("build_finished", context)
+        self.event_bus.emit(BuildFinishedEvent(context=context))
 
         ReportGenerator().generate(context)
 
