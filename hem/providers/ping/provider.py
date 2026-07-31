@@ -1,17 +1,26 @@
-from hem.runtime.build_manifest import GeneratedEntity
-from pathlib import Path
+from typing import List, Type
+from hem.capabilities.availability import AvailabilityCapability
+from hem.capabilities.base import BaseCapability
+from hem.capabilities.jitter import JitterCapability
+from hem.capabilities.latency import LatencyCapability
+from hem.capabilities.packet_loss import PacketLossCapability
 from hem.contracts.asset import Asset
-from hem.generators.base import BaseGenerator
 from hem.providers.base import BaseProvider
 from hem.providers.metadata import ProviderMetadata
 from hem.runtime.build_context import BuildContext
+from hem.runtime.build_manifest import GeneratedEntity
 from hem.runtime.paths import Paths
 
 
-class PingProvider(BaseProvider, BaseGenerator):
+class PingProvider(BaseProvider):
 
-    def __init__(self, template_path: Path | None = None):
-        BaseGenerator.__init__(self, template_path or Paths.templates())
+    def __init__(self):
+        self.capability_instances: List[BaseCapability] = [
+            AvailabilityCapability(),
+            LatencyCapability(),
+            JitterCapability(),
+            PacketLossCapability(),
+        ]
 
     @property
     def metadata(self) -> ProviderMetadata:
@@ -19,7 +28,7 @@ class PingProvider(BaseProvider, BaseGenerator):
             name="ping",
             version="1.0.0",
             author="HEM Core Team",
-            description="Ping / Network availability and latency monitoring provider",
+            description="Ping / Network capability-based monitoring provider",
             capabilities=["availability", "latency", "jitter", "packet_loss"],
         )
 
@@ -30,8 +39,11 @@ class PingProvider(BaseProvider, BaseGenerator):
         if not self.supports(asset):
             return
 
-        template = self.env.get_template("providers/provider.j2")
-        rendered = template.render(assets=[asset])
+        rendered_sections = []
+        for cap in self.capability_instances:
+            rendered_sections.append(cap.render(context, asset))
+
+        rendered = "template:\n" + "\n".join(rendered_sections)
 
         output_file = (context.output_dir or Paths.hem_package_output()) / "templates.yaml"
         output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -48,13 +60,14 @@ class PingProvider(BaseProvider, BaseGenerator):
             context.manifest.generated_files.append(output_file)
 
         if context.manifest:
-            context.manifest.generated_entities.append(
-                GeneratedEntity(
-                    entity_id=f"binary_sensor.hem_{asset.id}_available",
-                    platform="template",
-                    generator="PingProvider",
+            for cap in self.capability_instances:
+                context.manifest.generated_entities.append(
+                    GeneratedEntity(
+                        entity_id=f"{cap.platform}.hem_{asset.id}_{cap.name}",
+                        platform=cap.platform,
+                        generator="PingProvider",
+                    )
                 )
-            )
 
         context.statistics.files_generated = len(context.manifest.generated_files) if context.manifest else 1
-        context.statistics.entities_generated += 1
+        context.statistics.entities_generated += len(self.capability_instances)
