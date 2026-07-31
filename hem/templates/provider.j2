@@ -1,0 +1,14 @@
+template:
+
+{% for asset in assets %}
+
+  - binary_sensor:
+
+      - name: "HEM {{ asset.name }} Available"
+
+        unique_id: "hem_{{ asset.id }}_available"
+
+        state: >
+          {{ "{{ is_state('" }}{{ asset.source.availability }}{{ "', 'on') }}" }}
+
+{% endfor %}
