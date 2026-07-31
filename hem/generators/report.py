@@ -13,14 +13,15 @@ class ReportGenerator:
 
         console.print(f"[green]✓ Assets loaded ({context.statistics.assets_loaded})[/green]")
         console.print(f"[green]✓ Assets validated ({context.statistics.assets_validated})[/green]")
+        console.print(f"[green]✓ Inventory compiled ({len(context.inventory)} assets)[/green]")
         console.print("[green]✓ Provider compiled[/green]")
 
         if context.manifest:
             for file_path in context.manifest.generated_files:
                 try:
-                    rel_path = file_path.relative_to(Paths.project_root())
+                    rel_path = file_path.relative_to(Paths.project_root()).as_posix()
                 except ValueError:
-                    rel_path = file_path
+                    rel_path = str(file_path)
                 console.print(f"[green]✓ {file_path.name} generated[/green] ({rel_path})")
 
         console.print()

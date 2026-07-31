@@ -6,9 +6,28 @@ asset:
 
   provider: ping
 
-  class_name: infrastructure
+  class: infrastructure
+
+  type: gateway
+
+  vendor: GL.iNet
+
+  model: Brume 2
+
+  firmware: "4.5.0"
+
+  location: server_room
+
+  owner: sysadmin
 
   criticality: critical
+
+  tags:
+    - network
+    - router
+    - primary
+
+  description: Primary edge gateway router for home network.
 
   source:
 
