@@ -1,0 +1,15 @@
+asset:
+  id: sample_gateway
+  name: Sample Gateway
+  provider: ping
+  class: infrastructure
+  type: gateway
+  vendor: Generic
+  model: Router-X
+  location: main_office
+  criticality: high
+  source:
+    availability: binary_sensor.net_sample_gateway
+    latency: sensor.net_sample_gateway_latency
+    jitter: sensor.net_sample_gateway_jitter
+    packet_loss: sensor.net_sample_gateway_packet_loss

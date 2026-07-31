@@ -190,7 +190,23 @@ def new(name: str = typer.Argument(..., help="Provider extension name to scaffol
         raise typer.Exit(code=1)
 
 
+@app.command()
+def init():
+    """Initialize a new HEM user project structure and sample assets."""
+    try:
+        from hem.builders.init_manager import InitManager
+        target = InitManager().initialize_project()
+        console.print(f"\n[bold green]✓ HEM Project initialized successfully at {target}[/bold green]\n")
+        console.print("  [dim]Created:[/dim] src/assets/, src/providers/, output/, docs/")
+        console.print("  [dim]Sample Asset:[/dim] src/assets/sample_gateway.yaml\n")
+        console.print("Run [bold cyan]hem build[/bold cyan] to perform your first build!\n")
+    except Exception as e:
+        console.print(f"[red]Init failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
+
 
 
