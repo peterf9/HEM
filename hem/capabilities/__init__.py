@@ -9,6 +9,7 @@ from .latency import LatencyCapability
 from .memory import MemoryCapability
 from .metadata import CapabilityMetadata
 from .packet_loss import PacketLossCapability
+from .power import PowerCapability
 from .registry import CapabilityRegistry
 from .storage import StorageCapability
 from .temperature import TemperatureCapability
@@ -25,5 +26,6 @@ __all__ = [
     "NetworkBandwidthCapability",
     "StorageCapability",
     "TemperatureCapability",
+    "PowerCapability",
     "CapabilityRegistry",
 ]

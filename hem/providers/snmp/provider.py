@@ -3,6 +3,7 @@ from hem.capabilities.availability import AvailabilityCapability
 from hem.capabilities.bandwidth import NetworkBandwidthCapability
 from hem.capabilities.cpu import CpuCapability
 from hem.capabilities.memory import MemoryCapability
+from hem.capabilities.power import PowerCapability
 from hem.capabilities.storage import StorageCapability
 from hem.capabilities.temperature import TemperatureCapability
 from hem.contracts.asset import Asset
@@ -38,9 +39,13 @@ class EnvironmentComponent:
 
     def __init__(self):
         self.temperature_capability = TemperatureCapability()
+        self.power_capability = PowerCapability()
 
     def render(self, context: BuildContext, asset: Asset) -> str:
-        return self.temperature_capability.render(context, asset)
+        return (
+            self.temperature_capability.render(context, asset)
+            + self.power_capability.render(context, asset)
+        )
 
 
 class SnmpProvider(BaseProvider):
@@ -53,6 +58,7 @@ class SnmpProvider(BaseProvider):
             "bandwidth": NetworkBandwidthCapability(),
             "storage": StorageCapability(),
             "temperature": TemperatureCapability(),
+            "power": PowerCapability(),
         }
         self.interface_component = InterfaceComponent()
         self.storage_component = StorageComponent()
@@ -62,9 +68,9 @@ class SnmpProvider(BaseProvider):
     def metadata(self) -> ProviderMetadata:
         return ProviderMetadata(
             name="snmp",
-            version="1.2.0",
+            version="1.3.0",
             author="HEM Core",
-            description="Production SNMP Monitoring Provider for Switches, Routers, Storage and Thermal Environment",
+            description="Production SNMP Monitoring Provider for Switches, Routers, Storage, Power and Thermal Environment",
             capabilities=list(self.capabilities_map.keys()),
         )
 
