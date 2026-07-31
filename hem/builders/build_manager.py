@@ -11,9 +11,9 @@ from hem.events.events import (
 )
 from hem.generators.inventory import InventoryGenerator
 from hem.generators.manifest import ManifestGenerator
-from hem.generators.provider import ProviderGenerator
 from hem.generators.report import ReportGenerator
 from hem.loaders.asset_loader import AssetLoader
+from hem.providers.registry import ProviderRegistry
 from hem.runtime.build_context import BuildContext
 from hem.runtime.build_manifest import BuildManifest
 from hem.runtime.paths import Paths
@@ -22,8 +22,10 @@ from hem.validators.asset_validator import AssetValidator
 
 class BuildManager:
 
-    def __init__(self, event_bus: EventBus | None = None):
+    def __init__(self, event_bus: EventBus | None = None, provider_registry: ProviderRegistry | None = None):
         self.event_bus = event_bus or EventBus()
+        self.provider_registry = provider_registry or ProviderRegistry()
+        self.provider_registry.discover()
 
     def build(self) -> BuildContext:
         start_time = time.perf_counter()
@@ -50,8 +52,11 @@ class BuildManager:
         InventoryGenerator(Paths.templates()).generate(context)
         self.event_bus.emit(GeneratorFinishedEvent(generator_name="InventoryGenerator"))
 
-        ProviderGenerator(Paths.templates()).generate(context)
-        self.event_bus.emit(GeneratorFinishedEvent(generator_name="ProviderGenerator"))
+        for asset in context.assets:
+            for provider in self.provider_registry.providers():
+                if provider.supports(asset):
+                    provider.generate(context, asset)
+                    self.event_bus.emit(GeneratorFinishedEvent(generator_name=provider.metadata.name))
 
         end_time = time.perf_counter()
         finished_at = datetime.now()

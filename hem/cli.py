@@ -61,5 +61,22 @@ def deploy(target: str = typer.Option(None, help="Target Home Assistant packages
         raise typer.Exit(code=1)
 
 
+@app.command()
+def providers():
+    """List registered monitoring providers."""
+    from hem.providers.registry import ProviderRegistry
+    registry = ProviderRegistry()
+    registry.discover()
+    
+    console.print("\n[bold]Registered Providers[/bold]\n")
+    for provider in registry.providers():
+        meta = provider.metadata
+        console.print(f"[bold green]• {meta.name}[/bold green] (v{meta.version}) - {meta.description}")
+        console.print(f"  [dim]Capabilities:[/dim] {', '.join(meta.capabilities)}")
+    console.print()
+
+
 if __name__ == "__main__":
     app()
+
+
