@@ -205,8 +205,26 @@ def init():
         raise typer.Exit(code=1)
 
 
+@app.command()
+def graph():
+    """Generate a Mermaid dependency graph of assets, providers, and entities."""
+    try:
+        manager = BuildManager()
+        context = manager.build()
+        from hem.builders.graph_manager import GraphManager
+        gm = GraphManager()
+        mermaid_code = gm.generate_mermaid(context)
+
+        console.print("\n[bold]HEM System Dependency Graph (Mermaid)[/bold]\n")
+        console.print(f"```mermaid\n{mermaid_code}\n```\n")
+    except Exception as e:
+        console.print(f"[red]Graph generation failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
+
 
 
 
