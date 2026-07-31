@@ -41,24 +41,28 @@ def validate():
 @app.command()
 def build():
     try:
+        console.print("[bold]HEM Builder[/bold]\n")
+
         manager = BuildManager()
         report = manager.build()
 
-        console.print("[bold]HEM Build[/bold]")
+        console.print("[green]✓ Assets loaded[/green]")
+        console.print("[green]✓ Assets validated[/green]")
+        console.print("[green]✓ Provider compiled[/green]")
+
+        for file_path in report.generated_files:
+            rel_path = file_path.relative_to(Paths.project_root())
+            console.print(f"[green]✓ {file_path.name} generated[/green] ({rel_path})")
+
+        console.print()
+        console.print("[bold green]✓ Build successful[/bold green]\n")
+
         console.print("────────────────────────────")
         console.print(f"Assets.............{report.asset_count}")
         console.print(f"Providers..........{report.provider_count}")
         console.print(f"Templates..........{report.template_count}")
         console.print("Output.............[green]OK[/green]")
-        console.print("────────────────────────────")
-        console.print()
-        console.print("[bold]Generated Files[/bold]")
-
-        for file_path in report.generated_files:
-            rel_path = file_path.relative_to(Paths.project_root())
-            console.print(f"[green]✓[/green] {rel_path}")
-
-        console.print()
+        console.print("────────────────────────────\n")
         console.print("[green]Done.[/green]")
     except Exception as e:
         console.print(f"[red]Build failed:[/red] {e}")
