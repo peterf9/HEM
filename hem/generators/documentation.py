@@ -23,7 +23,26 @@ class DocumentationGenerator(BaseGenerator):
                 ent_content += f"| `{e.entity_id}` | `{e.platform}` | `{e.generator}` |\n"
         (docs_dir / "entities.md").write_text(ent_content, encoding="utf-8")
 
-        if context.manifest:
-            context.manifest.generated_files.extend([docs_dir / "inventory.md", docs_dir / "entities.md"])
+        # 3. providers.md
+        prov_content = f"# Registered Providers Documentation\n\n| Provider | Version | Description | Capabilities |\n| --- | --- | --- | --- |\n"
+        from hem.providers.registry import ProviderRegistry
+        reg = ProviderRegistry()
+        reg.discover()
+        for p in reg.providers():
+            m = p.metadata
+            prov_content += f"| `{m.name}` | `v{m.version}` | {m.description} | `{', '.join(m.capabilities)}` |\n"
+        (docs_dir / "providers.md").write_text(prov_content, encoding="utf-8")
 
-        context.statistics.files_generated += 2
+        # 4. build.md
+        build_content = f"# Build Engine Metrics\n\n- **Assets Loaded**: {context.statistics.assets_loaded}\n- **Entities Generated**: {context.statistics.entities_generated}\n- **Files Generated**: {context.statistics.files_generated}\n- **Build Time**: {context.statistics.build_time_ms:.2f}ms\n"
+        (docs_dir / "build.md").write_text(build_content, encoding="utf-8")
+
+        if context.manifest:
+            context.manifest.generated_files.extend([
+                docs_dir / "inventory.md",
+                docs_dir / "entities.md",
+                docs_dir / "providers.md",
+                docs_dir / "build.md",
+            ])
+
+        context.statistics.files_generated += 4

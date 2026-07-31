@@ -165,6 +165,32 @@ def docgen():
         raise typer.Exit(code=1)
 
 
+@app.command()
+def explain(entity_id: str = typer.Argument(..., help="Entity ID to explain")):
+    """Explain provenance and generation details for a specific entity."""
+    try:
+        manager = BuildManager()
+        context = manager.build()
+        from hem.builders.explain_manager import ExplainManager
+        ExplainManager().explain(context, entity_id)
+    except Exception as e:
+        console.print(f"[red]Explain failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def new(name: str = typer.Argument(..., help="Provider extension name to scaffold")):
+    """Scaffold a new provider extension package."""
+    try:
+        from hem.builders.scaffold_manager import ScaffoldManager
+        p_dir = ScaffoldManager().create_provider_scaffold(name)
+        console.print(f"\n[bold green]✓ Provider '{name}' scaffolded successfully at {p_dir}[/bold green]\n")
+    except Exception as e:
+        console.print(f"[red]Scaffold failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
+
 
