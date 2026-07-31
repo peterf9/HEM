@@ -3,11 +3,12 @@ from hem.builders.build_manager import BuildManager
 
 def test_build_manager():
     manager = BuildManager()
-    report = manager.build()
+    context = manager.build()
 
-    assert report.asset_count > 0
-    assert report.provider_count > 0
-    assert report.template_count > 0
-    assert len(report.generated_files) > 0
-    assert report.generated_files[0].name == "templates.yaml"
-    assert report.generated_files[0].exists()
+    assert context.statistics.assets_loaded > 0
+    assert context.statistics.assets_validated > 0
+    assert context.statistics.files_generated >= 2
+    assert context.manifest is not None
+    assert len(context.manifest.generated_files) >= 2
+    assert any(f.name == "templates.yaml" for f in context.manifest.generated_files)
+    assert any(f.name == "manifest.json" for f in context.manifest.generated_files)

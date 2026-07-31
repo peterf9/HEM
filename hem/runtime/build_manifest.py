@@ -1,12 +1,19 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
-from typing import List
+
+
+@dataclass
+class GeneratedEntity:
+    entity_id: str
+    platform: str
+    generator: str
 
 
 @dataclass
 class BuildManifest:
-    generated_files: List[Path] = field(default_factory=list)
-
-    def add_file(self, path: Path) -> None:
-        if path not in self.generated_files:
-            self.generated_files.append(path)
+    version: str
+    started_at: datetime
+    finished_at: datetime | None = None
+    generated_files: list[Path] = field(default_factory=list)
+    generated_entities: list[GeneratedEntity] = field(default_factory=list)
