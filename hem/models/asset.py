@@ -1,6 +1,18 @@
-"""Asset model definition."""
+from pydantic import BaseModel
 
-class Asset:
-    """Asset representation."""
-    def __init__(self, name: str):
-        self.name = name
+from .source import Source
+
+
+class Asset(BaseModel):
+
+    id: str
+
+    name: str
+
+    provider: str
+
+    class_name: str
+
+    criticality: str
+
+    source: Source
