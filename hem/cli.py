@@ -1,9 +1,8 @@
-from pathlib import Path
-
 import typer
 from rich.console import Console
 
 from hem.loaders.asset_loader import AssetLoader
+from hem.runtime.paths import Paths
 from hem.validators.asset_validator import AssetValidator
 
 console = Console()
@@ -25,7 +24,7 @@ def doctor():
 
 @app.command()
 def validate():
-    loader = AssetLoader(Path("src/assets"))
+    loader = AssetLoader(Paths.assets())
 
     assets = loader.load()
 
