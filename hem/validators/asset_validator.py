@@ -1,6 +1,12 @@
-"""Asset validator implementation."""
+import yaml
 
-class AssetValidator:
-    """Validator for assets."""
-    def validate(self, asset) -> bool:
-        return True
+from hem.models.asset import Asset
+
+
+def validate_asset(path):
+
+    with open(path) as f:
+
+        data = yaml.safe_load(f)
+
+    return Asset.model_validate(data["asset"])
