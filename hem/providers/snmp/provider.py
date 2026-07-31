@@ -3,6 +3,8 @@ from hem.capabilities.availability import AvailabilityCapability
 from hem.capabilities.bandwidth import NetworkBandwidthCapability
 from hem.capabilities.cpu import CpuCapability
 from hem.capabilities.memory import MemoryCapability
+from hem.capabilities.storage import StorageCapability
+from hem.capabilities.temperature import TemperatureCapability
 from hem.contracts.asset import Asset
 from hem.providers.base import BaseProvider
 from hem.providers.metadata import ProviderMetadata
@@ -21,6 +23,26 @@ class InterfaceComponent:
         return self.bandwidth_capability.render(context, asset)
 
 
+class StorageComponent:
+    """Storage Component."""
+
+    def __init__(self):
+        self.storage_capability = StorageCapability()
+
+    def render(self, context: BuildContext, asset: Asset) -> str:
+        return self.storage_capability.render(context, asset)
+
+
+class EnvironmentComponent:
+    """Environment Component (Temperature, Power, Fan)."""
+
+    def __init__(self):
+        self.temperature_capability = TemperatureCapability()
+
+    def render(self, context: BuildContext, asset: Asset) -> str:
+        return self.temperature_capability.render(context, asset)
+
+
 class SnmpProvider(BaseProvider):
 
     def __init__(self):
@@ -29,16 +51,20 @@ class SnmpProvider(BaseProvider):
             "cpu": CpuCapability(),
             "memory": MemoryCapability(),
             "bandwidth": NetworkBandwidthCapability(),
+            "storage": StorageCapability(),
+            "temperature": TemperatureCapability(),
         }
         self.interface_component = InterfaceComponent()
+        self.storage_component = StorageComponent()
+        self.environment_component = EnvironmentComponent()
 
     @property
     def metadata(self) -> ProviderMetadata:
         return ProviderMetadata(
             name="snmp",
-            version="1.1.0",
+            version="1.2.0",
             author="HEM Core",
-            description="Production SNMP Monitoring Provider for Switches, Routers, and Network Interfaces",
+            description="Production SNMP Monitoring Provider for Switches, Routers, Storage and Thermal Environment",
             capabilities=list(self.capabilities_map.keys()),
         )
 

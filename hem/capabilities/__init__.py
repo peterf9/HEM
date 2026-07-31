@@ -10,6 +10,8 @@ from .memory import MemoryCapability
 from .metadata import CapabilityMetadata
 from .packet_loss import PacketLossCapability
 from .registry import CapabilityRegistry
+from .storage import StorageCapability
+from .temperature import TemperatureCapability
 
 __all__ = [
     "CapabilityMetadata",
@@ -21,5 +23,7 @@ __all__ = [
     "CpuCapability",
     "MemoryCapability",
     "NetworkBandwidthCapability",
+    "StorageCapability",
+    "TemperatureCapability",
     "CapabilityRegistry",
 ]
