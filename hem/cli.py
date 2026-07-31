@@ -59,6 +59,35 @@ def build():
 
 
 @app.command()
+def plan():
+    """Preview changes and impact before deployment."""
+    try:
+        from hem.builders.plan_manager import PlanManager
+        from hem.runtime.paths import Paths
+
+        pm = PlanManager()
+        diff = pm.plan()
+
+        console.print("\n[bold]HEM Execution Plan[/bold]\n")
+        console.print(f"[bold green]Assets:[/bold green] {len(diff.new_assets)} assets to compile ({', '.join(diff.new_assets)})")
+        console.print(f"[bold green]Entities:[/bold green] +{len(diff.new_entities)} entities generated")
+        console.print(f"[bold green]Files:[/bold green] {len(diff.new_files)} target files")
+
+        for f in diff.new_files:
+            try:
+                rel = f.relative_to(Paths.project_root()).as_posix()
+            except ValueError:
+                rel = str(f)
+            console.print(f"  [dim]• {rel}[/dim]")
+
+        console.print("\n[bold green]✓ Plan execution safe. Ready for 'hem deploy'[/bold green]\n")
+    except Exception as e:
+        console.print(f"[red]Plan failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
+
+@app.command()
 def deploy(target: str = typer.Option(None, help="Target Home Assistant packages directory")):
     try:
         target_path = Path(target) if target else None

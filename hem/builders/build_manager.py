@@ -9,6 +9,7 @@ from hem.events.events import (
     GeneratorFinishedEvent,
     BuildFinishedEvent,
 )
+from hem.generators.dashboard import DashboardGenerator
 from hem.generators.inventory import InventoryGenerator
 from hem.generators.manifest import ManifestGenerator
 from hem.generators.registry import RegistryGenerator
@@ -62,6 +63,9 @@ class BuildManager:
 
         RegistryGenerator(Paths.templates()).generate(context)
         self.event_bus.emit(GeneratorFinishedEvent(generator_name="RegistryGenerator"))
+
+        DashboardGenerator(Paths.templates()).generate(context)
+        self.event_bus.emit(GeneratorFinishedEvent(generator_name="DashboardGenerator"))
 
         end_time = time.perf_counter()
         finished_at = datetime.now()

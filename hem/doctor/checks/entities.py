@@ -1,4 +1,4 @@
-from hem.doctor.base import BaseCheck, CheckResult
+from hem.doctor.base import BaseCheck, CheckResult, CheckStatus
 from hem.runtime.build_context import BuildContext
 
 
@@ -10,7 +10,14 @@ class EntitiesCheck(BaseCheck):
 
     def run(self, context: BuildContext) -> CheckResult:
         if not context.manifest or not context.manifest.generated_entities:
-            return CheckResult(self.name, False, "No entities generated in build context")
+            return CheckResult(
+                check_name=self.name,
+                passed=False,
+                message="No entities generated in build context",
+                recommendation="Verify that asset providers and capabilities are properly registered.",
+                documentation="docs/troubleshooting/entities.md",
+                status=CheckStatus.FAIL,
+            )
 
         unique_ids = set()
         duplicates = []
@@ -21,15 +28,19 @@ class EntitiesCheck(BaseCheck):
 
         if duplicates:
             return CheckResult(
-                self.name,
-                False,
-                f"Duplicate entity IDs found: {', '.join(duplicates)}",
-                {"duplicates": duplicates}
+                check_name=self.name,
+                passed=False,
+                message=f"Duplicate entity IDs found: {', '.join(duplicates)}",
+                recommendation="Ensure all asset IDs and entity unique_ids are unique across all YAML definitions.",
+                documentation="docs/troubleshooting/entities.md",
+                details={"duplicates": duplicates},
+                status=CheckStatus.FAIL,
             )
 
         return CheckResult(
-            self.name,
-            True,
-            f"All {len(unique_ids)} generated entities are unique and valid",
-            {"total_entities": len(unique_ids)}
+            check_name=self.name,
+            passed=True,
+            message=f"All {len(unique_ids)} generated entities are unique and valid",
+            details={"total_entities": len(unique_ids)},
+            status=CheckStatus.PASS,
         )

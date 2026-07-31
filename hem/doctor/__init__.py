@@ -1,6 +1,6 @@
 """Doctor package."""
 
-from .base import BaseCheck, CheckResult
+from .base import BaseCheck, BuildHealth, CheckResult, CheckStatus
 from .doctor_manager import DoctorManager
 
-__all__ = ["BaseCheck", "CheckResult", "DoctorManager"]
+__all__ = ["BaseCheck", "BuildHealth", "CheckResult", "CheckStatus", "DoctorManager"]

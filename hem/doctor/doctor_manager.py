@@ -1,7 +1,7 @@
 from typing import List
 from rich.console import Console
 
-from hem.doctor.base import BaseCheck, CheckResult
+from hem.doctor.base import BaseCheck, BuildHealth, CheckResult, CheckStatus
 from hem.doctor.checks.entities import EntitiesCheck
 from hem.doctor.checks.inventory import InventoryCheck
 from hem.doctor.checks.manifest import ManifestCheck
@@ -19,24 +19,31 @@ class DoctorManager:
             EntitiesCheck(),
         ]
 
-    def diagnose(self, context: BuildContext) -> List[CheckResult]:
-        results = []
-        console.print("\n[bold]HEM Doctor[/bold]\n")
+    def diagnose(self, context: BuildContext) -> BuildHealth:
+        health = BuildHealth()
+        console.print("\n[bold]HEM Doctor Diagnostics[/bold]\n")
 
-        all_passed = True
+        score_penalty = 0
         for check in self.checks:
             res = check.run(context)
-            results.append(res)
+            health.results.append(res)
+
             if res.passed:
                 console.print(f"[green]✓ {res.check_name}[/green]: {res.message}")
             else:
-                all_passed = False
+                score_penalty += 33
                 console.print(f"[red]✗ {res.check_name}[/red]: {res.message}")
+                if res.recommendation:
+                    console.print(f"  [yellow]Recommendation:[/yellow] {res.recommendation}")
+                if res.documentation:
+                    console.print(f"  [dim]Docs:[/dim] {res.documentation}")
 
-        console.print()
-        if all_passed:
-            console.print("[bold green]✓ System OK[/bold green]\n")
+        health.score = max(0, 100 - score_penalty)
+        if health.score == 100:
+            health.status = "HEALTHY"
+            console.print("\n[bold green]✓ System Status: HEALTHY (Score: 100/100)[/bold green]\n")
         else:
-            console.print("[bold red]✗ Issues detected[/bold red]\n")
+            health.status = "DEGRADED" if health.score > 50 else "UNHEALTHY"
+            console.print(f"\n[bold red]✗ System Status: {health.status} (Score: {health.score}/100)[/bold red]\n")
 
-        return results
+        return health
