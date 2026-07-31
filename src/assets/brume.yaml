@@ -1,0 +1,21 @@
+asset:
+
+  id: brume
+
+  name: Brume
+
+  provider: ping
+
+  class_name: infrastructure
+
+  criticality: critical
+
+  source:
+
+    availability: binary_sensor.net_brume
+
+    latency: sensor.net_brume_round_trip_time_average
+
+    jitter: sensor.net_brume_jitter
+
+    packet_loss: sensor.net_brume_packet_loss
