@@ -150,5 +150,21 @@ def sdk_validate(name: str = typer.Argument("ping", help="Provider name to valid
         raise typer.Exit(code=1)
 
 
+@app.command()
+def docgen():
+    """Generate Markdown documentation for inventory and entities."""
+    try:
+        manager = BuildManager()
+        context = manager.build()
+        from hem.generators.documentation import DocumentationGenerator
+        doc_gen = DocumentationGenerator(Paths.templates())
+        doc_gen.generate(context)
+        console.print("\n[bold green]✓ Markdown Documentation generated successfully in docs/generated/[/bold green]\n")
+    except Exception as e:
+        console.print(f"[red]Docgen failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
+
