@@ -1,4 +1,3 @@
-
 # HEM - HomeLab Enterprise Monitor
 
 > Enterprise-grade observability framework for Home Assistant.
@@ -46,6 +45,56 @@ Dashboards
       │
       ▼
 Automations / AI
+```
+
+---
+
+## Project Structure
+
+```
+HEM/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
+├── docs/
+│
+├── hem/
+│   ├── __init__.py
+│   ├── cli.py
+│   ├── config.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── asset.py
+│   │   └── source.py
+│   │
+│   ├── validators/
+│   │   ├── __init__.py
+│   │   └── asset_validator.py
+│   │
+│   ├── generators/
+│   │   ├── __init__.py
+│   │   └── provider_generator.py
+│   │
+│   ├── templates/
+│   │
+│   └── utils/
+│
+├── src/
+│   ├── assets/
+│   ├── providers/
+│   ├── engines/
+│   └── dashboards/
+│
+├── output/
+│
+├── tests/
+│
+├── pyproject.toml
+├── README.md
+└── LICENSE
 ```
 
 ---
