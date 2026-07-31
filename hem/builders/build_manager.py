@@ -11,6 +11,7 @@ from hem.events.events import (
 )
 from hem.generators.inventory import InventoryGenerator
 from hem.generators.manifest import ManifestGenerator
+from hem.generators.registry import RegistryGenerator
 from hem.generators.report import ReportGenerator
 from hem.loaders.asset_loader import AssetLoader
 from hem.providers.registry import ProviderRegistry
@@ -56,7 +57,11 @@ class BuildManager:
             for provider in self.provider_registry.providers():
                 if provider.supports(asset):
                     provider.generate(context, asset)
+                    context.statistics.providers_used.add(provider.metadata.name)
                     self.event_bus.emit(GeneratorFinishedEvent(generator_name=provider.metadata.name))
+
+        RegistryGenerator(Paths.templates()).generate(context)
+        self.event_bus.emit(GeneratorFinishedEvent(generator_name="RegistryGenerator"))
 
         end_time = time.perf_counter()
         finished_at = datetime.now()

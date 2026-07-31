@@ -22,7 +22,15 @@ def version():
 
 @app.command()
 def doctor():
-    console.print("[cyan]System OK[/cyan]")
+    try:
+        manager = BuildManager()
+        context = manager.build()
+        from hem.doctor.doctor_manager import DoctorManager
+        DoctorManager().diagnose(context)
+    except Exception as e:
+        console.print(f"[red]Doctor diagnosis failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
 
 
 @app.command()
