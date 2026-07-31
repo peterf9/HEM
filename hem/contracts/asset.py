@@ -3,10 +3,17 @@ from pydantic import BaseModel, Field
 
 
 class Source(BaseModel):
-    availability: str
-    latency: str
-    jitter: str
-    packet_loss: str
+    availability: Optional[str] = None
+    latency: Optional[str] = None
+    jitter: Optional[str] = None
+    packet_loss: Optional[str] = None
+    cpu: Optional[str] = None
+    memory: Optional[str] = None
+    extra_fields: Dict[str, Any] = Field(default_factory=dict)
+
+    model_config = {
+        "extra": "allow"
+    }
 
 
 class Asset(BaseModel):

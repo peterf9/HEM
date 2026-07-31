@@ -1,0 +1,15 @@
+asset:
+  id: mikrotik_core_switch
+  name: MikroTik Core Switch CRS328
+  provider: snmp
+  class: infrastructure
+  type: switch
+  vendor: MikroTik
+  model: CRS328-24P-4S+RM
+  firmware: RouterOS 7.12
+  location: server_room_rack_01
+  criticality: critical
+  source:
+    availability: binary_sensor.snmp_mikrotik_status
+    cpu: sensor.snmp_mikrotik_cpu_usage
+    memory: sensor.snmp_mikrotik_memory_usage
