@@ -32,19 +32,13 @@ def doctor():
         raise typer.Exit(code=1)
 
 
-
 @app.command()
 def validate():
     loader = AssetLoader(Paths.assets())
-
     assets = loader.load()
-
     AssetValidator().validate(assets)
-
     console.print()
-
     console.print("[green]✓ Validation successful[/green]")
-
     console.print(f"{len(assets)} assets loaded.")
 
 
@@ -86,7 +80,6 @@ def plan():
         raise typer.Exit(code=1)
 
 
-
 @app.command()
 def deploy(target: str = typer.Option(None, help="Target Home Assistant packages directory")):
     try:
@@ -113,7 +106,49 @@ def providers():
     console.print()
 
 
+@app.command()
+def search(query: str = typer.Argument("", help="Search query for providers catalog")):
+    """Search for providers in the HEM catalog."""
+    from hem.providers.catalog import ProviderCatalog
+    cat = ProviderCatalog()
+    results = cat.search(query)
+
+    console.print(f"\n[bold]Provider Catalog Search[/bold] (Query: '{query}')\n")
+    for entry in results:
+        status_str = "[green][Installed][/green]" if entry.installed else "[dim][Available][/dim]"
+        console.print(f"{status_str} [bold green]{entry.name}[/bold green] (v{entry.version}) - {entry.description}")
+        console.print(f"  [dim]Author:[/dim] {entry.author} | [dim]Capabilities:[/dim] {', '.join(entry.capabilities)}")
+    console.print()
+
+
+@app.command()
+def sdk_validate(name: str = typer.Argument("ping", help="Provider name to validate against SDK")):
+    """Validate a provider implementation against Provider SDK specifications."""
+    try:
+        from hem.providers.registry import ProviderRegistry
+        from hem.providers.validator import ProviderSDKValidator
+
+        registry = ProviderRegistry()
+        registry.discover()
+        provider = registry.get(name)
+
+        if not provider:
+            console.print(f"[red]Provider '{name}' not found.[/red]")
+            raise typer.Exit(code=1)
+
+        validator = ProviderSDKValidator()
+        res = validator.validate(provider)
+
+        console.print(f"\n[bold]HEM Provider SDK Validation[/bold]: [bold green]{res.provider_name}[/bold green]\n")
+        for item in res.items:
+            icon = "[green]✓[/green]" if item.passed else "[red]✗[/red]"
+            console.print(f"{icon} [bold]{item.check}[/bold]: {item.message}")
+
+        console.print(f"\n[bold green]Provider Score: {res.score}/100[/bold green]\n")
+    except Exception as e:
+        console.print(f"[red]SDK Validation failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
-
-
