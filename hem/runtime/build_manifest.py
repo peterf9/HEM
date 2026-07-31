@@ -12,8 +12,9 @@ class GeneratedEntity:
 
 @dataclass
 class BuildManifest:
-    version: str
+    hem_version: str
     started_at: datetime
+    manifest_version: int = 1
     finished_at: datetime | None = None
     generated_files: list[Path] = field(default_factory=list)
     generated_entities: list[GeneratedEntity] = field(default_factory=list)

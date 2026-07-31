@@ -19,7 +19,7 @@ class BuildManager:
 
         context = BuildContext()
         context.manifest = BuildManifest(
-            version=context.version,
+            hem_version=context.version,
             started_at=started_at,
         )
 

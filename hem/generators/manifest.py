@@ -11,14 +11,22 @@ class ManifestGenerator(BaseGenerator):
         if not context.manifest:
             return
 
-        output_file = (context.output_dir or Paths.hem_package_output()) / "manifest.json"
+        output_dir = context.output_dir or Paths.hem_package_output()
+        output_file = output_dir / "manifest.json"
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
+        def to_relative_path(path):
+            try:
+                return str(path.relative_to(Paths.project_root()).as_posix())
+            except ValueError:
+                return str(path.as_posix())
+
         manifest_data = {
-            "version": context.manifest.version,
+            "hem_version": context.manifest.hem_version,
+            "manifest_version": context.manifest.manifest_version,
             "started_at": context.manifest.started_at.isoformat(),
             "finished_at": context.manifest.finished_at.isoformat() if context.manifest.finished_at else None,
-            "generated_files": [str(p) for p in context.manifest.generated_files],
+            "generated_files": [to_relative_path(p) for p in context.manifest.generated_files],
             "generated_entities": [
                 {
                     "entity_id": e.entity_id,
