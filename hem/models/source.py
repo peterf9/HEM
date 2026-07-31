@@ -1,6 +1,12 @@
-"""Source model definition."""
+from pydantic import BaseModel
 
-class Source:
-    """Source representation."""
-    def __init__(self, name: str):
-        self.name = name
+
+class Source(BaseModel):
+
+    availability: str
+
+    latency: str
+
+    jitter: str
+
+    packet_loss: str
