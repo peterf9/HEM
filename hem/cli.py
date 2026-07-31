@@ -1,10 +1,23 @@
-"""CLI entrypoint for HEM."""
+import typer
 
-import sys
+from rich import print
 
-def main():
-    print("HEM CLI initialized.")
-    return 0
+app = typer.Typer(
+    help="HEM - HomeLab Enterprise Monitor"
+)
+
+
+@app.command()
+def version():
+
+    print("[green]HEM[/green] 0.1.0")
+
+
+@app.command()
+def doctor():
+
+    print("[cyan]System OK[/cyan]")
+
 
 if __name__ == "__main__":
-    sys.exit(main())
+    app()
