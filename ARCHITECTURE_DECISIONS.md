@@ -26,3 +26,14 @@ This document summarizes the core architectural decisions and their current stat
 - [x] **Quality**: High unit test coverage (`tests/`), CI/CD GitHub Actions workflow.
 - [x] **Ecosystem**: Official Providers (`ping`, `snmp`), Scaffold tool (`hem new`), Provider SDK validator (`hem sdk-validate`).
 - [x] **Operation**: Dashboard generator, Doctor diagnostic framework, Provenance explain tool (`hem explain`), Automated Markdown documentation (`hem docgen`).
+
+---
+
+# 🚀 Real-World Validation Strategy (Path to v1.0 GA)
+
+Prior to tagging the final `1.0.0` GA release, HEM undergoes evidence-based real-world validation based on 3 criteria:
+
+1. **User Adoption & Feedback**: Validation of `hem init` -> `hem build` -> `hem deploy` workflow across diverse Home Assistant environments.
+2. **Third-Party Provider Ecosystem**: External creation of community providers using `hem new` and `hem sdk-validate` without modifying Core.
+3. **Operational Stability**: Multi-build determinism, zero schema drift in `inventory.json`, and clean `hem doctor` diagnostic passes.
+
