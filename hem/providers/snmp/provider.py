@@ -1,5 +1,6 @@
 from pathlib import Path
 from hem.capabilities.availability import AvailabilityCapability
+from hem.capabilities.bandwidth import NetworkBandwidthCapability
 from hem.capabilities.cpu import CpuCapability
 from hem.capabilities.memory import MemoryCapability
 from hem.contracts.asset import Asset
@@ -10,6 +11,16 @@ from hem.runtime.build_manifest import GeneratedEntity
 from hem.runtime.paths import Paths
 
 
+class InterfaceComponent:
+    """SNMP Network Interface Component."""
+
+    def __init__(self):
+        self.bandwidth_capability = NetworkBandwidthCapability()
+
+    def render(self, context: BuildContext, asset: Asset) -> str:
+        return self.bandwidth_capability.render(context, asset)
+
+
 class SnmpProvider(BaseProvider):
 
     def __init__(self):
@@ -17,15 +28,17 @@ class SnmpProvider(BaseProvider):
             "availability": AvailabilityCapability(),
             "cpu": CpuCapability(),
             "memory": MemoryCapability(),
+            "bandwidth": NetworkBandwidthCapability(),
         }
+        self.interface_component = InterfaceComponent()
 
     @property
     def metadata(self) -> ProviderMetadata:
         return ProviderMetadata(
             name="snmp",
-            version="1.0.0",
+            version="1.1.0",
             author="HEM Core",
-            description="Production SNMP Monitoring Provider for Switches, Routers, and Servers",
+            description="Production SNMP Monitoring Provider for Switches, Routers, and Network Interfaces",
             capabilities=list(self.capabilities_map.keys()),
         )
 

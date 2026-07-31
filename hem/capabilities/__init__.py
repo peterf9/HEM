@@ -1,6 +1,7 @@
 """Capabilities package."""
 
 from .availability import AvailabilityCapability
+from .bandwidth import NetworkBandwidthCapability
 from .base import BaseCapability
 from .cpu import CpuCapability
 from .jitter import JitterCapability
@@ -19,5 +20,6 @@ __all__ = [
     "PacketLossCapability",
     "CpuCapability",
     "MemoryCapability",
+    "NetworkBandwidthCapability",
     "CapabilityRegistry",
 ]
