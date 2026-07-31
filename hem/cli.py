@@ -1,7 +1,7 @@
 import typer
 from rich.console import Console
 
-from hem.generators.provider import ProviderGenerator
+from hem.builders.build_manager import BuildManager
 from hem.loaders.asset_loader import AssetLoader
 from hem.runtime.paths import Paths
 from hem.validators.asset_validator import AssetValidator
@@ -40,17 +40,29 @@ def validate():
 
 @app.command()
 def build():
-    loader = AssetLoader(Paths.assets())
-    assets = loader.load()
+    try:
+        manager = BuildManager()
+        report = manager.build()
 
-    AssetValidator().validate(assets)
+        console.print("[bold]HEM Build[/bold]")
+        console.print("────────────────────────────")
+        console.print(f"Assets.............{report.asset_count}")
+        console.print(f"Providers..........{report.provider_count}")
+        console.print(f"Templates..........{report.template_count}")
+        console.print("Output.............[green]OK[/green]")
+        console.print("────────────────────────────")
+        console.print()
+        console.print("[bold]Generated Files[/bold]")
 
-    output_file = Paths.hem_package_output() / "templates.yaml"
-    generator = ProviderGenerator(Paths.templates())
-    generator.generate(assets, output_file)
+        for file_path in report.generated_files:
+            rel_path = file_path.relative_to(Paths.project_root())
+            console.print(f"[green]✓[/green] {rel_path}")
 
-    console.print()
-    console.print(f"[green]✓ Build successful![/green] Artifact generated at [bold]{output_file}[/bold]")
+        console.print()
+        console.print("[green]Done.[/green]")
+    except Exception as e:
+        console.print(f"[red]Build failed:[/red] {e}")
+        raise typer.Exit(code=1)
 
 
 if __name__ == "__main__":
