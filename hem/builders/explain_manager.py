@@ -40,7 +40,12 @@ class ExplainManager:
             console.print(f"[bold]Location:[/bold] {matching_asset.location}")
             console.print(f"[bold]Source Availability:[/bold] {matching_asset.source.availability}")
             console.print(f"[bold]Source Latency:[/bold] {matching_asset.source.latency}")
+            console.print(f"[bold]Source CPU:[/bold] {matching_asset.source.cpu}")
+            console.print(f"[bold]Source Memory:[/bold] {matching_asset.source.memory}")
         else:
             console.print("[bold]Asset ID:[/bold] [dim]System / Framework Telemetry Entity[/dim]")
 
+        console.print(f"[bold]Template / Artifact:[/bold] [dim]output/packages/hem/templates.yaml[/dim]")
+        console.print(f"[bold]Capability Metadata:[/bold] [dim]docs/PROVIDER_SDK.md[/dim]")
+        console.print(f"[bold]Documentation:[/bold] [dim]docs/generated/entities.md[/dim]")
         console.print()
