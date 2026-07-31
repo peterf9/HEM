@@ -222,8 +222,27 @@ def graph():
         raise typer.Exit(code=1)
 
 
+@app.command()
+def verify():
+    """Run full pre-deploy verification battery across build, doctor, and SDK validation."""
+    try:
+        from hem.builders.verification_manager import VerificationManager
+        vm = VerificationManager()
+        success = vm.verify()
+
+        if success:
+            console.print("\n[bold green]✓ Pre-deploy Verification SUCCESSFUL! All build, doctor, and SDK checks passed.[/bold green]\n")
+        else:
+            console.print("\n[bold red]✗ Pre-deploy Verification FAILED. Fix issues before deployment.[/bold red]\n")
+            raise typer.Exit(code=1)
+    except Exception as e:
+        console.print(f"[red]Verify failed:[/red] {e}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
+
 
 
 
