@@ -1,0 +1,15 @@
+asset:
+  id: css326
+  name: MikroTik CSS326 Switch
+  provider: ping
+  class: infrastructure
+  type: switch
+  vendor: MikroTik
+  model: CSS326-24G-2S+RM
+  location: server_room_rack_02
+  criticality: high
+  source:
+    availability: binary_sensor.net_css326
+    latency: sensor.net_css326_round_trip_time_average
+    jitter: sensor.net_css326_jitter
+    packet_loss: sensor.net_css326_packet_loss

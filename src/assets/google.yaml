@@ -1,0 +1,15 @@
+asset:
+  id: google
+  name: Google DNS
+  provider: ping
+  class: network
+  type: dns
+  vendor: Google
+  model: Public DNS
+  location: cloud
+  criticality: critical
+  source:
+    availability: binary_sensor.net_google
+    latency: sensor.net_google_round_trip_time_average
+    jitter: sensor.net_google_jitter
+    packet_loss: sensor.net_google_packet_loss

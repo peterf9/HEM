@@ -1,0 +1,15 @@
+asset:
+  id: zigbee2mqtt
+  name: Zigbee2MQTT Gateway
+  provider: ping
+  class: service
+  type: gateway
+  vendor: Koenkk
+  model: Zigbee2MQTT
+  location: server_room
+  criticality: high
+  source:
+    availability: binary_sensor.net_zigbee2mqtt
+    latency: sensor.net_zigbee2mqtt_round_trip_time_average
+    jitter: sensor.net_zigbee2mqtt_jitter
+    packet_loss: sensor.net_zigbee2mqtt_packet_loss

@@ -1,0 +1,15 @@
+asset:
+  id: homeassistant
+  name: Home Assistant Core
+  provider: ping
+  class: service
+  type: controller
+  vendor: Nabu Casa
+  model: Home Assistant OS
+  location: server_room
+  criticality: critical
+  source:
+    availability: binary_sensor.net_homeassistant
+    latency: sensor.net_homeassistant_round_trip_time_average
+    jitter: sensor.net_homeassistant_jitter
+    packet_loss: sensor.net_homeassistant_packet_loss

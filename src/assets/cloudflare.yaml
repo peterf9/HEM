@@ -1,0 +1,15 @@
+asset:
+  id: cloudflare
+  name: Cloudflare DNS
+  provider: ping
+  class: network
+  type: dns
+  vendor: Cloudflare
+  model: Anycast DNS
+  location: cloud
+  criticality: critical
+  source:
+    availability: binary_sensor.net_cloudflare
+    latency: sensor.net_cloudflare_round_trip_time_average
+    jitter: sensor.net_cloudflare_jitter
+    packet_loss: sensor.net_cloudflare_packet_loss

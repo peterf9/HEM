@@ -1,0 +1,15 @@
+asset:
+  id: mqtt
+  name: MQTT Broker Server
+  provider: ping
+  class: service
+  type: broker
+  vendor: Eclipse
+  model: Mosquitto
+  location: server_room
+  criticality: high
+  source:
+    availability: binary_sensor.net_mqtt
+    latency: sensor.net_mqtt_round_trip_time_average
+    jitter: sensor.net_mqtt_jitter
+    packet_loss: sensor.net_mqtt_packet_loss

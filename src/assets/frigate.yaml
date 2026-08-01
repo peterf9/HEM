@@ -1,0 +1,15 @@
+asset:
+  id: frigate
+  name: Frigate NVR Server
+  provider: ping
+  class: service
+  type: nvr
+  vendor: OpenSource
+  model: Frigate NVR
+  location: server_room
+  criticality: high
+  source:
+    availability: binary_sensor.net_frigate
+    latency: sensor.net_frigate_round_trip_time_average
+    jitter: sensor.net_frigate_jitter
+    packet_loss: sensor.net_frigate_packet_loss
