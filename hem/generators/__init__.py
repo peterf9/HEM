@@ -7,6 +7,7 @@ from .inventory import InventoryGenerator
 from .manifest import ManifestGenerator
 from .registry import RegistryGenerator
 from .report import ReportGenerator
+from .template_generator import TemplateGenerator
 
 __all__ = [
     "BaseGenerator",
@@ -16,4 +17,5 @@ __all__ = [
     "ManifestGenerator",
     "RegistryGenerator",
     "ReportGenerator",
+    "TemplateGenerator",
 ]
