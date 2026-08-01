@@ -1,6 +1,6 @@
 asset:
   id: homeassistant
-  name: Home Assistant Core
+  name: Home Assistant
   provider: ping
   class: service
   type: controller

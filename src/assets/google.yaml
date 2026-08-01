@@ -1,6 +1,6 @@
 asset:
   id: google
-  name: Google DNS
+  name: Google
   provider: ping
   class: network
   type: dns

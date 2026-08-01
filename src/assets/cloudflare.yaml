@@ -1,6 +1,6 @@
 asset:
   id: cloudflare
-  name: Cloudflare DNS
+  name: Cloudflare
   provider: ping
   class: network
   type: dns

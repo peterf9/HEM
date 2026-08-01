@@ -19,8 +19,8 @@ class AvailabilityCapability(BaseCapability):
 
     def render(self, context: BuildContext, asset: Asset) -> str:
         return f"""  - binary_sensor:
-      - name: "HEM {asset.name} Available"
-        unique_id: "hem_{asset.id}_available"
+      - name: "HEM {asset.name} Availability"
+        unique_id: "hem_{asset.id}_availability"
         state: >
           {{{{ is_state('{asset.source.availability}', 'on') }}}}
 """

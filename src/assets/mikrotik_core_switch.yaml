@@ -1,6 +1,6 @@
 asset:
   id: mikrotik_core_switch
-  name: MikroTik Core Switch CRS328
+  name: MikroTik Core Switch
   provider: snmp
   class: infrastructure
   type: switch

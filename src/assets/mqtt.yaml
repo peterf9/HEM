@@ -1,6 +1,6 @@
 asset:
   id: mqtt
-  name: MQTT Broker Server
+  name: MQTT
   provider: ping
   class: service
   type: broker

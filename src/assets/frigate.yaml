@@ -1,6 +1,6 @@
 asset:
   id: frigate
-  name: Frigate NVR Server
+  name: Frigate
   provider: ping
   class: service
   type: nvr

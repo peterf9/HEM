@@ -1,6 +1,6 @@
 asset:
   id: css326
-  name: MikroTik CSS326 Switch
+  name: CSS326
   provider: ping
   class: infrastructure
   type: switch
